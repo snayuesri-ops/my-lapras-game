@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Lapras Pet</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            background: linear-gradient(180deg, #81d4fa 0%, #0288d1 100%);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 320px;
+            color: #fff;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0 0 15px 0;
+            font-size: 24px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .stats-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .bar-outer {
+            width: 150px;
+            height: 14px;
+            background-color: #ffffff;
+            border-radius: 7px;
+            overflow: hidden;
+        }
+
+        .bar-inner {
+            height: 100%;
+            width: 100%;
+            transition: width 0.3s ease;
+        }
+
+        #hunger-bar { background-color: #ff7043; }
+        #happiness-bar { background-color: #ffca28; }
+        #energy-bar { background-color: #66bb6a; }
+
+        .pet-stage {
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #lapras-svg {
+            width: 160px;
+            height: 160px;
+            transition: transform 0.2s ease;
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #0288d1;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            background-color: #b0bec5;
+            color: #78909c;
+            cursor: not-allowed;
+        }
+
+        .message-box {
+            margin-top: 15px;
+            height: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Lapras</h1>
+    
+    <div class="stats-container">
+        <div class="stat-bar">
+            <span>Hunger</span>
+            <div class="bar-outer"><div id="hunger-bar" class="bar-inner"></div></div>
+        </div>
+        <div class="stat-bar">
+            <span>Happiness</span>
+            <div class="bar-outer"><div id="happiness-bar" class="bar-inner"></div></div>
+        </div>
+        <div class="stat-bar">
+            <span>Energy</span>
+            <div class="bar-outer"><div id="energy-bar" class="bar-inner"></div></div>
+        </div>
+    </div>
+
+    <div class="pet-stage">
+        <!-- SVG Drawing of Lapras -->
+        <svg id="lapras-svg" viewBox="0 0 200 200" class="bounce">
+            <!-- Shell/Body Base -->
+            <path d="M 40 140 Q 100 180 160 140 Q 170 110 140 100 Q 100 90 60 100 Q 30 110 40 140 Z" fill="#4fc3f7" />
+            <!-- Shell Spike Detail -->
+            <path d="M 80 110 Q 100 80 120 110 Q 100 125 80 110 Z" fill="#78909c" />
+            <circle cx="90" cy="105" r="3" fill="#546e7a"/>
+            <circle cx="110" cy="105" r="3" fill="#546e7a"/>
+            <!-- Neck & Head -->
+            <path d="M 60 110 Q 50 60 70 40 Q 85 25 100 40 Q 90 70 80 110 Z" fill="#4fc3f7" />
+            <!-- Belly Cream Color -->
+            <path d="M 65 112 Q 75 70 92 50 Q 82 75 75 112 Z" fill="#fff9c4" />
+            <!-- Horn -->
+            <path d="M 78 33 Q 80 20 83 33 Z" fill="#b0bec5" stroke="#78909c" stroke-width="2"/>
+            <!-- Ears -->
+            <path d="M 68 38 Q 50 30 62 45 Z" fill="#4fc3f7" />
+            <path d="M 88 38 Q 106 30 94 45 Z" fill="#4fc3f7" />
+            <!-- Flippers -->
+            <path d="M 45 135 Q 10 140 30 155 Q 55 150 50 135 Z" fill="#4fc3f7" />
+            <path d="M 155 135 Q 190 140 170 155 Q 145 150 150 135 Z" fill="#4fc3f7" />
+            <!-- Eyes (Normal) -->
+            <g id="eyes-open">
+                <ellipse cx="73" cy="42" rx="3" ry="5" fill="#263238" />
+                <ellipse cx="87" cy="42" rx="3" ry="5" fill="#263238" />
+                <circle cx="72" cy="40" r="1" fill="#ffffff" />
+                <circle cx="86" cy="40" r="1" fill="#ffffff" />
+            </g>
+            <!-- Eyes (Sleeping/Closed) -->
+            <g id="eyes-closed" style="display: none;">
+                <path d="M 70 43 Q 73 47 76 43" stroke="#263238" stroke-width="2" fill="none" />
+                <path d="M 84 43 Q 87 47 90 43" stroke="#263238" stroke-width="2" fill="none" />
+            </g>
+            <!-- Mouth -->
+            <path id="mouth" d="M 77 50 Q 80 53 83 50" stroke="#263238" stroke-width="2" fill="none" />
+        </svg>
+    </div>
+
+    <div class="message-box" id="message">Lapras looks happy!</div>
+
+    <div class="actions">
+        <button id="btn-feed" onclick="feedPet()">🍎 Feed</button>
+        <button id="btn-play" onclick="playPet()">🎾 Play</button>
+        <button id="btn-sleep" onclick="toggleSleep()">🌙 Sleep</button>
+    </div>
+</div>
+
+<script>
+    let stats = {
+        hunger: 80,
+        happiness: 80,
+        energy: 80
+    };
+
+    let isSleeping = false;
+
+    // Element references
+    const hungerBar = document.getElementById('hunger-bar');
+    const happinessBar = document.getElementById('happiness-bar');
+    const energyBar = document.getElementById('energy-bar');
+    const laprasSvg = document.getElementById('lapras-svg');
+    const eyesOpen = document.getElementById('eyes-open');
+    const eyesClosed = document.getElementById('eyes-closed');
+    const message = document.getElementById('message');
+    const btnFeed = document.getElementById('btn-feed');
+    const btnPlay = document.getElementById('btn-play');
+    const btnSleep = document.getElementById('btn-sleep');
+
+    function updateUI() {
+        hungerBar.style.width = stats.hunger + '%';
+        happinessBar.style.width = stats.happiness + '%';
+        energyBar.style.width = stats.energy + '%';
+
+        if (isSleeping) {
+            eyesOpen.style.display = 'none';
+            eyesClosed.style.display = 'block';
+            laprasSvg.classList.remove('bounce');
+            btnFeed.disabled = true;
+            btnPlay.disabled = true;
+            btnSleep.innerText = "☀️ Wake Up";
+        } else {
+            eyesOpen.style.display = 'block';
+            eyesClosed.style.display = 'none';
+            laprasSvg.classList.add('bounce');
+            btnFeed.disabled = false;
+            btnPlay.disabled = false;
+            btnSleep.innerText = "🌙 Sleep";
+        }
+    }
+
+    function feedPet() {
+        if (isSleeping) return;
+        stats.hunger = Math.min(100, stats.hunger + 25);
+        message.innerText = "Lapras enjoyed the Pokemon Food!";
+        updateUI();
+    }
+
+    function playPet() {
+        if (isSleeping) return;
+        if (stats.energy < 15) {
+            message.innerText = "Lapras is too tired to play!";
+            return;
+        }
+        stats.happiness = Math.min(100, stats.happiness + 20);
+        stats.energy = Math.max(0, stats.energy - 15);
+        stats.hunger = Math.max(0, stats.hunger - 10);
+        message.innerText = "Lapras loved playing with you!";
+        updateUI();
+    }
+
+    function toggleSleep() {
+        isSleeping = !isSleeping;
+        if (isSleeping) {
+            message.innerText = "Lapras is taking a cozy nap... Zzz";
+        } else {
+            message.innerText = "Lapras woke up full of energy!";
+        }
+        updateUI();
+    }
+
+    // Game loop: Stat decay & sleep restoration over time
+    setInterval(() => {
+        if (isSleeping) {
+            stats.energy = Math.min(100, stats.energy + 5);
+            stats.hunger = Math.max(0, stats.hunger - 1);
+        } else {
+            stats.hunger = Math.max(0, stats.hunger - 2);
+            stats.happiness = Math.max(0, stats.happiness - 2);
+            stats.energy = Math.max(0, stats.energy - 1);
+        }
+
+        if (stats.hunger < 20 && !isSleeping) {
+            message.innerText = "Lapras is hungry!";
+        }
+
+        updateUI();
+    }, 3000);
+
+    // Initial setup
+    updateUI();
+</script>
+
+</body>
+</html>
